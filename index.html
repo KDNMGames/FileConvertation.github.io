@@ -1,0 +1,48 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Конвертер файлов в PDF</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <svg class="title-svg" viewBox="0 0 300 60">
+            <defs>
+                <linearGradient id="titleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#2196F3"/>
+                    <stop offset="50%" stop-color="#E91E63"/>
+                    <stop offset="100%" stop-color="#4CAF50"/>
+                </linearGradient>
+            </defs>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+                  fill="url(#titleGradient)" font-size="24" font-weight="bold">
+                Kuban Technology
+            </text>
+        </svg>
+        <h1>Конвертер файлов в PDF</h1>
+        <div id="drop-zone">
+            <input type="file" id="file-input" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png,.txt,.rtf,.a1" />
+            <p>Перетащите файл сюда или <label for="file-input">выберите файл</label></p>
+        </div>
+        <div id="file-info">
+            <p id="selected-file">Файл не выбран</p>
+            <p id="file-size"></p>
+        </div>
+        <div class="format-selector">
+            <label for="page-size">Формат листа:</label>
+            <select id="page-size">
+                <option value="A1">A1 (594x841 мм)</option>
+                <option value="A2">A2 (420x594 мм)</option>
+                <option value="A3">A3 (297x420 мм)</option>
+                <option value="A4" selected>A4 (210x297 мм)</option>
+            </select>
+        </div>
+        <button id="convert-btn" disabled>Конвертировать в PDF</button>
+        <div id="download-section" style="display:none;">
+            <a id="download-link" href="#" download>Скачать PDF</a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
