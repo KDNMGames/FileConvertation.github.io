@@ -1,64 +1,101 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Конвертер в PDF</title>
+    <!-- Yandex.RTB -->
+    <script>window.yaContextCb=window.yaContextCb||[]</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
     <style>
+        .title-svg {
+            width: 100%;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 400px;
         }
 
         #drop-zone {
             border: 2px dashed #ccc;
             border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            margin: 20px 0;
+            padding: 20px;
+            margin-bottom: 20px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         #drop-zone:hover {
-            border-color: #666;
+            background-color: #f9f9f9;
+        }
+
+        #file-input {
+            display: none;
         }
 
         #convert-btn {
-            background: #4CAF50;
+            background-color: #4CAF50;
             color: white;
-            padding: 12px 24px;
             border: none;
+            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            margin-top: 15px;
         }
 
         #convert-btn:disabled {
-            background: #ccc;
+            background-color: #cccccc;
             cursor: not-allowed;
         }
 
         #download-section {
-            display: none;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
-        .file-info {
+        #download-link {
+            display: inline-block;
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .format-selector {
             margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Стили для рекламного блока */
-        .ad-container {
-            margin: 20px 0;
-            text-align: center;
+        #page-size {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <!-- Рекламный блок -->
-    <div class="ad-container">
+    <div class="container">
+        <!-- Yandex.RTB R-A-14089310-1 -->
         <div id="yandex_rtb_R-A-14089310-1"></div>
         <script>
             window.yaContextCb.push(() => {
@@ -68,40 +105,39 @@
                 })
             })
         </script>
+
+        <svg class="title-svg" viewBox="0 0 400 60">
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="24" fill="#333">
+                Конвертер в PDF
+            </text>
+        </svg>
+
+        <div id="drop-zone">
+            <p>Перетащите файл сюда или</p>
+            <button onclick="document.getElementById('file-input').click()">Выберите файл</button>
+            <input type="file" id="file-input" accept="image/*,.doc,.docx,.txt">
+            <div id="selected-file"></div>
+            <div id="file-size"></div>
+        </div>
+
+        <div class="format-selector">
+            <label for="page-size">Формат страницы:</label>
+            <select id="page-size">
+                <option value="A4">A4</option>
+                <option value="A3">A3</option>
+                <option value="A2">A2</option>
+                <option value="A1">A1</option>
+            </select>
+        </div>
+
+        <button id="convert-btn" disabled>Конвертировать в PDF</button>
+
+        <div id="download-section" style="display: none;">
+            <a id="download-link" href="#">Скачать PDF</a>
+        </div>
     </div>
 
-    <!-- Основной контент -->
-    <h1>Конвертер файлов в PDF</h1>
-    
-    <div id="drop-zone">
-        <p>Перетащите файл сюда или кликните для выбора</p>
-        <input type="file" id="file-input" hidden>
-    </div>
-
-    <div class="file-info">
-        <p id="selected-file">Файл не выбран</p>
-        <p id="file-size"></p>
-    </div>
-
-    <label>Формат страницы: 
-        <select id="page-size">
-            <option value="A4">A4</option>
-            <option value="A3">A3</option>
-            <option value="A2">A2</option>
-            <option value="A1">A1</option>
-        </select>
-    </label>
-
-    <button id="convert-btn" disabled>Конвертировать в PDF</button>
-
-    <div id="download-section">
-        <a id="download-link" href="#"><button>Скачать PDF</button></a>
-    </div>
-
-    <!-- Подключение PDFLib -->
-    <script src="https://unpkg.com/@pdf-lib/stdlib@2.0.0/dist/stdlib.min.js"></script>
-
-    <!-- Основной скрипт -->
+    <script src="https://unpkg.com/@pdf-lib/pdf-lib@^1.11.2/dist/pdf-lib.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('drop-zone');
@@ -127,7 +163,6 @@
 
             dropZone.addEventListener('drop', handleDrop, false);
             fileInput.addEventListener('change', handleFiles, false);
-            dropZone.addEventListener('click', () => fileInput.click());
 
             function handleDrop(e) {
                 const dt = e.dataTransfer;
@@ -165,6 +200,7 @@
 
                 try {
                     const pdfBytes = await convertToPDF(selectedFile);
+                    
                     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
                     const url = URL.createObjectURL(blob);
                     
@@ -180,6 +216,7 @@
             async function convertToPDF(file) {
                 const { PDFDocument } = window.PDFLib;
                 const pdfDoc = await PDFDocument.create();
+                
                 const selectedSize = pageSizeSelect.value;
                 const [width, height] = pageSizes[selectedSize];
 
@@ -214,15 +251,10 @@
                     });
                 }
 
-                return await pdfDoc.save();
+                const pdfBytes = await pdfDoc.save();
+                return pdfBytes;
             }
         });
     </script>
-
-    <!-- Yandex.RTB -->
-    <script>
-        window.yaContextCb = window.yaContextCb || []
-    </script>
-    <script src="https://yandex.ru/ads/system/context.js" async></script>
 </body>
 </html>
