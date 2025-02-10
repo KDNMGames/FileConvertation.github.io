@@ -1,48 +1,228 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Конвертер файлов в PDF</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер в PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        #drop-zone:hover {
+            border-color: #666;
+        }
+
+        #convert-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #convert-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #download-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .file-info {
+            margin: 15px 0;
+        }
+
+        /* Стили для рекламного блока */
+        .ad-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <svg class="title-svg" viewBox="0 0 300 60">
-            <defs>
-                <linearGradient id="titleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#2196F3"/>
-                    <stop offset="50%" stop-color="#E91E63"/>
-                    <stop offset="100%" stop-color="#4CAF50"/>
-                </linearGradient>
-            </defs>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-                  fill="url(#titleGradient)" font-size="24" font-weight="bold">
-                Kuban Technology
-            </text>
-        </svg>
-        <h1>Конвертер файлов в PDF</h1>
-        <div id="drop-zone">
-            <input type="file" id="file-input" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png,.txt,.rtf,.a1" />
-            <p>Перетащите файл сюда или <label for="file-input">выберите файл</label></p>
-        </div>
-        <div id="file-info">
-            <p id="selected-file">Файл не выбран</p>
-            <p id="file-size"></p>
-        </div>
-        <div class="format-selector">
-            <label for="page-size">Формат листа:</label>
-            <select id="page-size">
-                <option value="A1">A1 (594x841 мм)</option>
-                <option value="A2">A2 (420x594 мм)</option>
-                <option value="A3">A3 (297x420 мм)</option>
-                <option value="A4" selected>A4 (210x297 мм)</option>
-            </select>
-        </div>
-        <button id="convert-btn" disabled>Конвертировать в PDF</button>
-        <div id="download-section" style="display:none;">
-            <a id="download-link" href="#" download>Скачать PDF</a>
-        </div>
+    <!-- Рекламный блок -->
+    <div class="ad-container">
+        <div id="yandex_rtb_R-A-14089310-1"></div>
+        <script>
+            window.yaContextCb.push(() => {
+                Ya.Context.AdvManager.render({
+                    "blockId": "R-A-14089310-1",
+                    "renderTo": "yandex_rtb_R-A-14089310-1"
+                })
+            })
+        </script>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <script src="script.js"></script>
+
+    <!-- Основной контент -->
+    <h1>Конвертер файлов в PDF</h1>
+    
+    <div id="drop-zone">
+        <p>Перетащите файл сюда или кликните для выбора</p>
+        <input type="file" id="file-input" hidden>
+    </div>
+
+    <div class="file-info">
+        <p id="selected-file">Файл не выбран</p>
+        <p id="file-size"></p>
+    </div>
+
+    <label>Формат страницы: 
+        <select id="page-size">
+            <option value="A4">A4</option>
+            <option value="A3">A3</option>
+            <option value="A2">A2</option>
+            <option value="A1">A1</option>
+        </select>
+    </label>
+
+    <button id="convert-btn" disabled>Конвертировать в PDF</button>
+
+    <div id="download-section">
+        <a id="download-link" href="#"><button>Скачать PDF</button></a>
+    </div>
+
+    <!-- Подключение PDFLib -->
+    <script src="https://unpkg.com/@pdf-lib/stdlib@2.0.0/dist/stdlib.min.js"></script>
+
+    <!-- Основной скрипт -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const selectedFileText = document.getElementById('selected-file');
+            const fileSizeText = document.getElementById('file-size');
+            const convertBtn = document.getElementById('convert-btn');
+            const downloadSection = document.getElementById('download-section');
+            const downloadLink = document.getElementById('download-link');
+            const pageSizeSelect = document.getElementById('page-size');
+
+            let selectedFile = null;
+
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            dropZone.addEventListener('drop', handleDrop, false);
+            fileInput.addEventListener('change', handleFiles, false);
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFileSelection(files[0]);
+            }
+
+            function handleFiles() {
+                handleFileSelection(fileInput.files[0]);
+            }
+
+            function handleFileSelection(file) {
+                if (!file) return;
+
+                if (file.size > 100 * 1024 * 1024) {
+                    alert('Размер файла не должен превышать 100 МБ');
+                    return;
+                }
+
+                selectedFile = file;
+                selectedFileText.textContent = `Выбран файл: ${file.name}`;
+                fileSizeText.textContent = `Размер: ${(file.size / 1024 / 1024).toFixed(2)} МБ`;
+                convertBtn.disabled = false;
+            }
+
+            const pageSizes = {
+                A1: [1684, 2384],
+                A2: [1190, 1684],
+                A3: [842, 1190],
+                A4: [595, 842]
+            };
+
+            convertBtn.addEventListener('click', async () => {
+                if (!selectedFile) return;
+
+                try {
+                    const pdfBytes = await convertToPDF(selectedFile);
+                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    downloadLink.href = url;
+                    downloadLink.download = selectedFile.name.replace(/\.[^/.]+$/, "") + '.pdf';
+                    downloadSection.style.display = 'block';
+                } catch (error) {
+                    console.error('Ошибка конвертации:', error);
+                    alert('Не удалось конвертировать файл');
+                }
+            });
+
+            async function convertToPDF(file) {
+                const { PDFDocument } = window.PDFLib;
+                const pdfDoc = await PDFDocument.create();
+                const selectedSize = pageSizeSelect.value;
+                const [width, height] = pageSizes[selectedSize];
+
+                if (file.type.startsWith('image/')) {
+                    const image = await pdfDoc.embedJpg(await file.arrayBuffer());
+                    const page = pdfDoc.addPage([width, height]);
+                    
+                    const imageRatio = image.width / image.height;
+                    const pageRatio = width / height;
+                    
+                    let scaleWidth = width;
+                    let scaleHeight = height;
+                    
+                    if (imageRatio > pageRatio) {
+                        scaleHeight = width / imageRatio;
+                    } else {
+                        scaleWidth = height * imageRatio;
+                    }
+                    
+                    page.drawImage(image, {
+                        x: (width - scaleWidth)/2,
+                        y: (height - scaleHeight)/2,
+                        width: scaleWidth,
+                        height: scaleHeight
+                    });
+                } else {
+                    const page = pdfDoc.addPage([width, height]);
+                    page.drawText(`Конвертация файла: ${file.name}`, {
+                        x: 50,
+                        y: height - 100,
+                        size: 15
+                    });
+                }
+
+                return await pdfDoc.save();
+            }
+        });
+    </script>
+
+    <!-- Yandex.RTB -->
+    <script>
+        window.yaContextCb = window.yaContextCb || []
+    </script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
 </body>
 </html>
