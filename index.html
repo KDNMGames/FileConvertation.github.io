@@ -1,63 +1,82 @@
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Конвертер файлов в PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUBAN TECHNOLOGY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <script>window.yaContextCb=window.yaContextCb||[]</script>
-    <script src="https://yandex.ru/ads/system/context.js" async></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Kuban Technology</h1>
-        
-        <!-- Yandex.RTB R-A-14089310-1 -->
-        <div id="yandex_rtb_R-A-14089310-1"></div>
-        <script>
-        window.yaContextCb.push(() => {
-            Ya.Context.AdvManager.render({
-                "blockId": "R-A-14089310-1",
-                "renderTo": "yandex_rtb_R-A-14089310-1"
-            })
-        })
-        </script>
+    <header class="main-header">
+        <div class="sky-background">
+            <div class="sun"></div>
+            <div class="clouds"></div>
+        </div>
+        <h1>KUBAN TECHNOLOGY</h1>
+        <nav class="header-nav">
+            <button onclick="scrollToSection('about')">About</button>
+            <button onclick="scrollToSection('projects')">Projects</button>
+            <button onclick="scrollToSection('contacts')">Contacts</button>
+        </nav>
+        <div class="sunflowers"></div>
+    </header>
 
-        <div id="drop-zone">
-            <input type="file" id="file-input" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png,.txt,.rtf" />
-            <p>Перетащите файл сюда или <label for="file-input">выберите! файл</label></p>
+    <section id="about" class="section about-section">
+        <div class="content-box">
+            <h2>About Us</h2>
+            <p>KUBAN TECHNOLOGY - we are a team of dreamers, striving to give the world the best products and revolutionary solutions.</p>
+            <p>The best technologies are available only in Kuban</p>
         </div>
-        
-        <div class="supported-formats">
-            <h3>Поддерживаемые форматы:</h3>
-            <ul>
-                <li>DOC, DOCX</li>
-                <li>XLS, XLSX</li>
-                <li>PPT, PPTX</li>
-                <li>JPG, PNG</li>
-                <li>TXT, RTF</li>
-            </ul>
-        </div>
+    </section>
 
-        <div id="file-info">
-            <p id="selected-file">Файл не выбран</p>
-            <p id="file-size"></p>
+    <section id="projects" class="section projects-section">
+        <div class="maize-field"></div>
+        <div class="hut"></div>
+        <div class="content-box">
+            <h2>Our Projects</h2>
+            <a href="https://assetstore.unity.com/publishers/111663" target="_blank" class="project-link">Asset Store</a>
         </div>
-        
-        <div class="format-selector">
-            <label for="page-size">Формат листа:</label>
-            <select id="page-size">
-                <option value="A1">A1 (594x841 мм)</option>
-                <option value="A2">A2 (420x594 мм)</option>
-                <option value="A3">A3 (297x420 мм)</option>
-                <option value="A4" selected>A4 (210x297 мм)</option>
-            </select>
+    </section>
+
+    <section id="contacts" class="section contacts-section">
+        <div class="grass-background"></div>
+        <div class="content-box">
+            <h2>Contacts</h2>
+            <div class="contacts-grid">
+                <div class="contact-item email-contact" data-email="managerkdnm@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    <span>Technical Support</span>
+                </div>
+                <div class="contact-item email-contact" data-email="kdnmgamesdevelop@gmail.com">
+                    <i class="fas fa-handshake"></i>
+                    <span>Cooperation</span>
+                </div>
+                <a href="https://www.youtube.com/@kdnm_studio" target="_blank" class="contact-item">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://kdnm.itch.io" target="_blank" class="contact-item">
+                    <i class="fab fa-itch-io"></i>
+                </a>
+                <a href="https://sidequestvr.com/user/2098884" target="_blank" class="contact-item">
+                    <i class="fas fa-vr-cardboard"></i>
+                </a>
+                <a href="https://boosty.to/kdnm/purchase/2810578?share=subscription_link" target="_blank" class="contact-item">
+                    <i class="fas fa-coins"></i>
+                </a>
+                <a href="https://tiktok.com/@kdnm_tiktok?is_from_webapp=1&sender_device=pc" target="_blank" class="contact-item">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://patreon.com/BloodandFuns93?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink" target="_blank" class="contact-item">
+                    <i class="fab fa-patreon"></i>
+                </a>
+            </div>
+            <div id="email-copied-message" class="email-copied-message"></div>
         </div>
-        <button id="convert-btn" disabled>Конвертировать в PDF</button>
-        <div id="download-section" style="display:none;">
-            <a id="download-link" href="#" download>Скачать PDF</a>
+        <div class="wooden-fence">
+            <div class="jug"></div>
         </div>
-    </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    </section>
+
     <script src="script.js"></script>
 </body>
 </html>
