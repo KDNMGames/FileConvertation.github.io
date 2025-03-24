@@ -5,6 +5,34 @@
     <title>KUBAN TECHNOLOGY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .products-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-item h3 {
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
     <header class="main-header">
@@ -16,6 +44,7 @@
         <nav class="header-nav">
             <button onclick="scrollToSection('about')">About</button>
             <button onclick="scrollToSection('projects')">Projects</button>
+            <button onclick="scrollToSection('products')">Товары</button>
             <button onclick="scrollToSection('contacts')">Contacts</button>
         </nav>
         <div class="sunflowers"></div>
@@ -35,6 +64,27 @@
         <div class="content-box">
             <h2>Our Projects</h2>
             <a href="https://assetstore.unity.com/publishers/111663" target="_blank" class="project-link">Asset Store</a>
+        </div>
+    </section>
+
+    <section id="products" class="section products-section">
+        <div class="content-box">
+            <h2>Наши Товары</h2>
+            <div class="products-grid">
+                <div class="product-item">
+                    <a href="https://kdnm.itch.io/product1" target="_blank">
+                        <img src="https://kdnm.itch.io/product1-image.jpg" alt="Product 1">
+                        <h3>Название Товара 1</h3>
+                    </a>
+                </div>
+                <div class="product-item">
+                    <a href="https://kdnm.itch.io/product2" target="_blank">
+                        <img src="https://kdnm.itch.io/product2-image.jpg" alt="Product 2">
+                        <h3>Название Товара 2</h3>
+                    </a>
+                </div>
+                <!-- Добавьте больше товаров по аналогии -->
+            </div>
         </div>
     </section>
 
