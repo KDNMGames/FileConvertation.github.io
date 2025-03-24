@@ -6,31 +6,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .products-section {
+        .photos-section {
             padding: 20px;
             background-color: #f9f9f9;
         }
 
-        .products-grid {
+        .photos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
-        .product-item {
+        .photo-item {
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
             text-align: center;
         }
 
-        .product-item img {
+        .photo-item img {
             width: 100%;
             height: auto;
-        }
-
-        .product-item h3 {
-            margin: 10px 0;
         }
     </style>
 </head>
@@ -44,7 +40,7 @@
         <nav class="header-nav">
             <button onclick="scrollToSection('about')">About</button>
             <button onclick="scrollToSection('projects')">Projects</button>
-            <button onclick="scrollToSection('products')">Товары</button>
+            <button onclick="scrollToSection('photos')">Фотографии</button>
             <button onclick="scrollToSection('contacts')">Contacts</button>
         </nav>
         <div class="sunflowers"></div>
@@ -67,23 +63,22 @@
         </div>
     </section>
 
-    <section id="products" class="section products-section">
+    <section id="photos" class="section photos-section">
         <div class="content-box">
-            <h2>Наши Товары</h2>
-            <div class="products-grid">
-                <div class="product-item">
-                    <a href="https://kdnm.itch.io/product1" target="_blank">
-                        <img src="https://kdnm.itch.io/product1-image.jpg" alt="Product 1">
-                        <h3>Название Товара 1</h3>
-                    </a>
+            <h2>Наши Фотографии</h2>
+            <div class="photos-grid">
+                <div class="photo-item">
+                    <img src="Untitled Project (9) (2).jpg" alt="Photo 1">
                 </div>
-                <div class="product-item">
-                    <a href="https://kdnm.itch.io/product2" target="_blank">
-                        <img src="https://kdnm.itch.io/product2-image.jpg" alt="Product 2">
-                        <h3>Название Товара 2</h3>
-                    </a>
+                <div class="photo-item">
+                    <img src="Untitled Project (22) (1).jpg" alt="Photo 2">
                 </div>
-                <!-- Добавьте больше товаров по аналогии -->
+                <div class="photo-item">
+                    <img src="Untitled Project (32) (1).jpg" alt="Photo 3">
+                </div>
+                <div class="photo-item">
+                    <img src="Social.png" alt="Photo 4">
+                </div>
             </div>
         </div>
     </section>
